@@ -1,4 +1,4 @@
-import { KafkaClient, KafkaClientOptions, HighLevelProducer } from "kafka-node";
+import { KafkaClient, KafkaClientOptions, HighLevelProducer, ProduceRequest } from "kafka-node";
 import uuid = require("uuid");
 
 const { KAFKA_HOST } = require('./config');
@@ -28,13 +28,17 @@ const plus = {
 const client = new KafkaClient(options);
 
 const producer = new HighLevelProducer(client); // kafka.HighLevelProducer(client);
+
 producer.on("ready", function () {
     console.log("Kafka Producer is connected and ready.");
+
+    // producer.createTopics(["test1"], (error: any, data: any) => { console.log(error); console.log(data); });
 
     KafkaService.sendRecord({
         type: 'webevents.dev', userId: 'my-client-id',
         sessionId: 'webevents.dev ', data: { 'test': 'webevents.dev' }
     });
+
 });
 
 // For this demo we just log producer errors to the console.
@@ -58,11 +62,12 @@ const KafkaService = {
         };
 
         const buffer = Buffer.from(JSON.stringify(event));
+        // console.log(buffer);
 
         // Create a new payload
-        const record = [
+        const record: ProduceRequest[] = [
             {
-                topic: "webevents.dev",
+                topic: "webevents.te",
                 messages: buffer,
                 attributes: 1 /* Use GZip compression for the payload */
             }
