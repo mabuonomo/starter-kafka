@@ -2,6 +2,7 @@ import { KafkaClient, KafkaClientOptions, HighLevelProducer, ProduceRequest } fr
 import uuid = require("uuid");
 
 const { KAFKA_HOST } = require('./config');
+type Record = { type: string, userId: string, sessionId: string, data: string };
 
 const options: KafkaClientOptions = {
     kafkaHost: KAFKA_HOST,
@@ -34,10 +35,12 @@ producer.on("ready", function () {
 
     // producer.createTopics(["test1"], (error: any, data: any) => { console.log(error); console.log(data); });
 
-    KafkaService.sendRecord({
+    let rc: Record = {
         type: 'webevents.dev', userId: 'my-client-id',
-        sessionId: 'webevents.dev ', data: { 'test': 'webevents.dev' }
-    });
+        sessionId: 'webevents.dev ', data: 'test'
+    };
+
+    KafkaService.sendRecord(rc);
 
 });
 
@@ -47,18 +50,19 @@ producer.on("error", function (error) {
 });
 
 const KafkaService = {
-    sendRecord: ({ type, userId, sessionId, data }, callback = (error: Error) => { console.log(error); }) => {
-        if (!userId) {
-            return callback(new Error(`A userId must be provided.`));
-        }
+    sendRecord: (rc: Record,
+        callback = (error: Error, data: any) => { console.log(error); console.log(data); }) => {
+        // if (!userId) {
+        //     return callback(new Error(`A userId must be provided.`));
+        // }
 
         const event = {
             id: uuid.v4, // uuid.v4(),
             timestamp: Date.now(),
-            userId: userId,
-            sessionId: sessionId,
-            type: type,
-            data: data
+            userId: rc.userId,
+            sessionId: rc.sessionId,
+            type: rc.type,
+            data: rc.data
         };
 
         const buffer = Buffer.from(JSON.stringify(event));
@@ -67,9 +71,9 @@ const KafkaService = {
         // Create a new payload
         const record: ProduceRequest[] = [
             {
-                topic: "webevents.te",
-                messages: buffer,
-                attributes: 1 /* Use GZip compression for the payload */
+                topic: "test", //"webevents.te",
+                messages: 'buffer',
+                attributes: 4 //1 /* Use GZip compression for the payload */
             }
         ];
 
