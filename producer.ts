@@ -53,48 +53,48 @@ producer.on("error", function (error) {
     console.error(error);
 });
 
-const KafkaService = {
-    sendRecord: (rc: Record,
-        callback = (error: Error, data: any) => { console.log(error); console.log(data); }) => {
-        // if (!userId) {
-        //     return callback(new Error(`A userId must be provided.`));
-        // }
+// const KafkaService = {
+//     sendRecord: (rc: Record,
+//         callback = (error: Error, data: any) => { console.log(error); console.log(data); }) => {
+//         // if (!userId) {
+//         //     return callback(new Error(`A userId must be provided.`));
+//         // }
 
-        // {
-        //     topic: 'topicName',
-        //     messages: ['message body'], // multi messages should be a array, single message can be just a string or a KeyedMessage instance
-        //     key: 'theKey', // string or buffer, only needed when using keyed partitioner
-        //     partition: 0, // default 0
-        //     attributes: 2, // default: 0
-        //     timestamp: Date.now() // <-- defaults to Date.now() (only available with kafka v0.10+)
-        //  }
+//         // {
+//         //     topic: 'topicName',
+//         //     messages: ['message body'], // multi messages should be a array, single message can be just a string or a KeyedMessage instance
+//         //     key: 'theKey', // string or buffer, only needed when using keyed partitioner
+//         //     partition: 0, // default 0
+//         //     attributes: 2, // default: 0
+//         //     timestamp: Date.now() // <-- defaults to Date.now() (only available with kafka v0.10+)
+//         //  }
 
-        const event = {
-            id: uuid.v4, // uuid.v4(),
-            timestamp: Date.now(),
-            userId: rc.userId,
-            sessionId: rc.sessionId,
-            type: rc.type,
-            data: rc.data
-        };
+//         const event = {
+//             id: uuid.v4, // uuid.v4(),
+//             timestamp: Date.now(),
+//             userId: rc.userId,
+//             sessionId: rc.sessionId,
+//             type: rc.type,
+//             data: rc.data
+//         };
 
-        const buffer = Buffer.from(JSON.stringify(event));
-        // console.log(buffer);
+//         const buffer = Buffer.from(JSON.stringify(event));
+//         // console.log(buffer);
 
-        // Create a new payload
-        const record: ProduceRequest[] = [
-            {
-                topic: "webevents.te",
-                messages: 'buffer',
-                // attributes: 4 //1 /* Use GZip compression for the payload */
-            }
-        ];
+//         // Create a new payload
+//         const record: ProduceRequest[] = [
+//             {
+//                 topic: "webevents.te",
+//                 messages: 'buffer',
+//                 // attributes: 4 //1 /* Use GZip compression for the payload */
+//             }
+//         ];
 
-        console.log("Kafka Producer sending...");
+//         console.log("Kafka Producer sending...");
 
-        //Send record to Kafka and log result/error
-        producer.send(record, callback);
-    }
-};
+//         //Send record to Kafka and log result/error
+//         producer.send(record, callback);
+//     }
+// };
 
-export default KafkaService;
+// export default KafkaService;
