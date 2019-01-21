@@ -1,4 +1,4 @@
-import { KafkaClient, KafkaClientOptions, HighLevelProducer, ProduceRequest } from "kafka-node";
+import { KafkaClient, KafkaClientOptions, HighLevelProducer, ProduceRequest, ProducerOptions, KeyedMessage } from "kafka-node";
 import uuid = require("uuid");
 
 const { KAFKA_HOST } = require('./config');
@@ -14,21 +14,21 @@ const options: KafkaClientOptions = {
     clientId: "my-client-id"
 }
 
-const plus = {
-    sessionTimeout: 300,
-    spinDelay: 100,
-    retries: 2
+const ops: ProducerOptions = {
+    requireAcks: 1,
+    ackTimeoutMs: 100,
+    partitionerType: 2
 }
-
-// export interface ProducerOptions {
-//     requireAcks?: number;
-//     ackTimeoutMs?: number;
-//     partitionerType?: number;
-// }
 
 const client = new KafkaClient(options);
 
-const producer = new HighLevelProducer(client); // kafka.HighLevelProducer(client);
+const producer = new HighLevelProducer(client, ops); // kafka.HighLevelProducer(client);
+
+let km = new KeyedMessage('key', 'message');
+let payloads = [
+    { topic: 'topic1', messages: 'hi', partition: 0 },
+    { topic: 'topic2', messages: ['hello', 'world', km] }
+];
 
 producer.on("ready", function () {
     console.log("Kafka Producer is connected and ready.");
@@ -40,8 +40,12 @@ producer.on("ready", function () {
         sessionId: 'webevents.dev ', data: 'test'
     };
 
-    KafkaService.sendRecord(rc);
+    // KafkaService.sendRecord(rc);
 
+    producer.send(payloads, function (err, data) {
+        console.log(data);
+        console.log(err);
+    });
 });
 
 // For this demo we just log producer errors to the console.
@@ -55,6 +59,15 @@ const KafkaService = {
         // if (!userId) {
         //     return callback(new Error(`A userId must be provided.`));
         // }
+
+        // {
+        //     topic: 'topicName',
+        //     messages: ['message body'], // multi messages should be a array, single message can be just a string or a KeyedMessage instance
+        //     key: 'theKey', // string or buffer, only needed when using keyed partitioner
+        //     partition: 0, // default 0
+        //     attributes: 2, // default: 0
+        //     timestamp: Date.now() // <-- defaults to Date.now() (only available with kafka v0.10+)
+        //  }
 
         const event = {
             id: uuid.v4, // uuid.v4(),
@@ -71,9 +84,9 @@ const KafkaService = {
         // Create a new payload
         const record: ProduceRequest[] = [
             {
-                topic: "test", //"webevents.te",
+                topic: "webevents.te",
                 messages: 'buffer',
-                attributes: 4 //1 /* Use GZip compression for the payload */
+                // attributes: 4 //1 /* Use GZip compression for the payload */
             }
         ];
 
