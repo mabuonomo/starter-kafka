@@ -26,8 +26,8 @@ const producer = new HighLevelProducer(client, ops); // kafka.HighLevelProducer(
 
 let km = new KeyedMessage('key', 'message');
 let payloads = [
-    { topic: 'topic1', messages: 'hi', partition: 0 },
-    { topic: 'topic2', messages: ['hello', 'world', km] }
+    { topic: 'topic', messages: 'hi', partition: 0 },
+    { topic: 'topic', messages: ['hello', 'world', km] }
 ];
 
 producer.on("ready", function () {
