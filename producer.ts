@@ -24,8 +24,8 @@ const ops: ProducerOptions = {
 
 const client = new Client(KAFKA_HOST);// options);
 
-// const producer = new Producer(client, ops); // kafka.HighLevelProducer(client);
-const producer = new HighLevelProducer(client, ops); // kafka.HighLevelProducer(client);
+const producer = new Producer(client, ops); // kafka.HighLevelProducer(client);
+// const producer = new HighLevelProducer(client, ops); // kafka.HighLevelProducer(client);
 
 let km = new KeyedMessage('key', 'message');
 let payloads = [
