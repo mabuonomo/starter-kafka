@@ -1,8 +1,10 @@
-import { KafkaClient, KafkaClientOptions, HighLevelProducer, ProduceRequest, ProducerOptions, KeyedMessage } from "kafka-node";
+import { KafkaClient, KafkaClientOptions, HighLevelProducer, ProduceRequest, ProducerOptions, KeyedMessage, Producer, Client } from "kafka-node";
 import uuid = require("uuid");
 
 const { KAFKA_HOST } = require('./config');
 type Record = { type: string, userId: string, sessionId: string, data: string };
+
+console.log(KAFKA_HOST);
 
 const options: KafkaClientOptions = {
     kafkaHost: KAFKA_HOST,
@@ -20,9 +22,9 @@ const ops: ProducerOptions = {
     partitionerType: 2
 }
 
-const client = new KafkaClient(options);
+const client = new Client(KAFKA_HOST);// options);
 
-const producer = new HighLevelProducer(client, ops); // kafka.HighLevelProducer(client);
+const producer = new Producer(client, ops); // kafka.HighLevelProducer(client);
 
 let km = new KeyedMessage('key', 'message');
 let payloads = [
@@ -42,6 +44,7 @@ producer.on("ready", function () {
 
     // KafkaService.sendRecord(rc);
 
+    console.log("Sending...");
     producer.send(payloads, function (err, data) {
         console.log(data);
         console.log(err);
