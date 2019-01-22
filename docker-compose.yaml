@@ -9,7 +9,7 @@ services:
   #   ports:
   #    - "6379:6379"
   kafka:
-    image: "landoop/fast-data-dev"
+    image: "landoop/fast-data-dev:latest"
     environment:
     - ADV_HOST=127.0.0.1
     ports:

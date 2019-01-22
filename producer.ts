@@ -24,7 +24,8 @@ const ops: ProducerOptions = {
 
 const client = new Client(KAFKA_HOST);// options);
 
-const producer = new Producer(client, ops); // kafka.HighLevelProducer(client);
+// const producer = new Producer(client, ops); // kafka.HighLevelProducer(client);
+const producer = new HighLevelProducer(client, ops); // kafka.HighLevelProducer(client);
 
 let km = new KeyedMessage('key', 'message');
 let payloads = [
@@ -32,22 +33,43 @@ let payloads = [
     { topic: 'topic', messages: ['hello', 'world', km] }
 ];
 
+let rc: Record = {
+    type: 'webevents.dev', userId: 'my-client-id',
+    sessionId: 'webevents.dev ', data: 'test'
+};
+const kafkaTopic = 'socketTopicTest';
+const kafkaMessage = rc;
+
 producer.on("ready", function () {
     console.log("Kafka Producer is connected and ready.");
 
     // producer.createTopics(["test1"], (error: any, data: any) => { console.log(error); console.log(data); });
 
-    let rc: Record = {
-        type: 'webevents.dev', userId: 'my-client-id',
-        sessionId: 'webevents.dev ', data: 'test'
-    };
+
 
     // KafkaService.sendRecord(rc);
 
     console.log("Sending...");
-    producer.send(payloads, function (err, data) {
-        console.log(data);
-        console.log(err);
+    // producer.send(payloads, function (err, data) {
+    //     console.log(data);
+    //     console.log(err);
+    // });
+
+    producer.createTopics([kafkaTopic], true, function (errToCreateTopic, topicCreated) {
+        if (!errToCreateTopic) {
+            console.log("topic creato");
+            producer.send([{
+                topic: kafkaTopic, partition: 0, messages: [JSON.stringify(kafkaMessage)], attributes: 0
+            }], function (err, result) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(result);
+                }
+            });
+        } else {
+            console.log("topic non creato");
+        }
     });
 });
 
