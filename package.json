@@ -18,7 +18,7 @@
     "express": "^4.16.4",
     "fastest-validator": "^0.6.13",
     "inquirer": "^5.2.0",
-    "kafka-node": "^3.0.0",
+    "kafka-node": "^4.0.0",
     "lodash": "^4.17.11",
     "mongodb": "^3.1.12",
     "prompt": "^1.0.0",

@@ -1,4 +1,4 @@
-import { KafkaClient, KafkaClientOptions, HighLevelProducer, ProduceRequest, ProducerOptions, KeyedMessage, Producer, Client } from "kafka-node";
+import { KafkaClient, KafkaClientOptions, HighLevelProducer, ProduceRequest, ProducerOptions, KeyedMessage, Producer } from "kafka-node";
 import uuid = require("uuid");
 
 const { KAFKA_HOST } = require('./config');
@@ -22,7 +22,7 @@ const ops: ProducerOptions = {
     partitionerType: 2
 }
 
-const client = new Client(KAFKA_HOST);// options);
+const client = new KafkaClient(KAFKA_HOST);// options);
 
 const producer = new Producer(client, ops); // kafka.HighLevelProducer(client);
 // const producer = new HighLevelProducer(client, ops); // kafka.HighLevelProducer(client);
