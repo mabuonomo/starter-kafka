@@ -2,6 +2,7 @@ module.exports = {
   // TOPIC: 'requests',
   // TOPIC_EVENTS: 'finalevents',
   KAFKA_HOST: '127.0.0.1:2181', //2181 '127.0.0.1:9092',
+  KAFKA_HOST2: '127.0.0.1:9092', //2181 '127.0.0.1:9092',
   // PUBSUB_TOPIC: 'responses',
   // MONGO_URL: 'mongodb://localhost:27017/db1',
   // MONGO_COLLECTION: 'test',

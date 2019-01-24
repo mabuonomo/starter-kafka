@@ -7,13 +7,13 @@ import { KafkaClient } from "kafka-node";
 // const Transform = require('stream').Transform;
 // const ProducerStream = require('./lib/producerStream');
 // const _ = require('lodash');
-const { KAFKA_HOST } = require('./config');
+const { KAFKA_HOST2 } = require('./config');
 type Record = { type: string, userId: string, sessionId: string, data: string };
 
-console.log(KAFKA_HOST);
+console.log(KAFKA_HOST2);
 
 const options: KafkaClientOptions = {
-    kafkaHost: KAFKA_HOST,
+    kafkaHost: KAFKA_HOST2,
     connectTimeout: 1000,
     requestTimeout: 3000,
     autoConnect: true,
