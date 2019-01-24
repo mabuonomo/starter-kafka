@@ -5,16 +5,16 @@ import { ConsumerOptions } from "kafka-node";
 // const ProducerStream = require('./lib/producerStream');
 // const ConsumerGroupStream = require('./lib/consumerGroupStream');
 const resultProducer = new ProducerStream();
-const { KAFKA_HOST } = require('./config');
+const { KAFKA_HOST2 } = require('./config');
 
 const consumerOptions : ConsumerGroupStreamOptions = {
-  kafkaHost: KAFKA_HOST,
+  kafkaHost: KAFKA_HOST2,
   groupId: 'ExampleTestGroup',
   sessionTimeout: 15000,
   protocol: ['roundrobin'],
 //   asyncPush: false,
   id: 'consumer1',
-//   fromOffset: 'latest'
+  fromOffset: 'latest'
 };
 
 const consumerGroup = new ConsumerGroupStream(consumerOptions, 'ExampleTopic');
