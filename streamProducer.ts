@@ -10,15 +10,11 @@ import { KafkaClient } from "kafka-node";
 const { KAFKA_HOST2 } = require('./config');
 type Record = { type: string, userId: string, sessionId: string, data: string };
 
-console.log(KAFKA_HOST2);
-
 const options: KafkaClientOptions = {
     kafkaHost: KAFKA_HOST2,
     connectTimeout: 1000,
     requestTimeout: 3000,
     autoConnect: true,
-    // connectRetryOptions: RetryOptions,
-    // sslOptions: any,
     clientId: "my-client-id"
 }
 
@@ -31,10 +27,7 @@ const ops: ProducerOptions = {
 const cc: ProducerStreamOptions = {
     kafkaClient: options,
     producer: ops,
-    // highWaterMark?: number;
 }
-
-// const client = new KafkaClient(KAFKA_HOST);// options);
 
 const producer = new ProducerStream(cc);
 

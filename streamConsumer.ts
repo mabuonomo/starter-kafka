@@ -19,20 +19,18 @@ const messageTransform = new Transform({
   objectMode: true,
   decodeStrings: true,
   transform(message, encoding, callback) {
+    let counter: Map<string, number> = message.value.trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .reduce((map, word) => map.set(word, map.get(word) + 1 || 1), new Map());
 
-    let counter = message.value.split(' ')
-      .map((v: string) => { let o = {}; o[v] = 1; return o; })
-      .reduce((a: string, b: string) => {
-        if (!Object.keys(a)[0].includes(Object.keys(b)[0])) return Object.assign(a, b);
-        let c = Object.assign({}, a);
-        c[Object.keys(b)[0]] = a[Object.keys(b)[0]] + 1;
-        return c;
-      });
+    console.log(counter);
 
-    console.log(`Received message ${message.value} transforming input`);
+    let json = JSON.stringify([Array.from(counter)]);
+    console.log(`Received message ${message.value} transforming input in ${json}`);
     callback(null, {
       topic: 'RebalanceTopic',
-      messages: `You have been (${JSON.stringify(counter)}) made an example of`
+      messages: `You have been (${json}) made an example of`
     });
   }
 });
