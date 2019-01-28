@@ -22,7 +22,7 @@ const messageTransform = new Transform({
     let counter: Map<string, number> = message.value.trim()
       .toLowerCase()
       .split(/\s+/)
-      .reduce((map, word) => map.set(word, map.get(word) + 1 || 1), new Map());
+      .reduce((map: Map<string, number>, word: string) => map.set(word, map.get(word) + 1 || 1), new Map());
 
     console.log(counter);
 

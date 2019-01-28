@@ -2,11 +2,7 @@ import { ProducerStream, ProducerOptions, ProducerStreamOptions } from "kafka-no
 import { Transform } from "stream";
 import * as _ from "lodash";
 import { KafkaClientOptions } from "kafka-node";
-import { KafkaClient } from "kafka-node";
 
-// const Transform = require('stream').Transform;
-// const ProducerStream = require('./lib/producerStream');
-// const _ = require('lodash');
 const { KAFKA_HOST2 } = require('./config');
 type Record = { type: string, userId: string, sessionId: string, data: string };
 
