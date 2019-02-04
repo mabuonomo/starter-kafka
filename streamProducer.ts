@@ -3,11 +3,10 @@ import { Transform } from "stream";
 import * as _ from "lodash";
 import { KafkaClientOptions } from "kafka-node";
 
-const { KAFKA_HOST2 } = require('./config');
-type Record = { type: string, userId: string, sessionId: string, data: string };
+const { KAFKA_HOST } = require('./config');
 
 const options: KafkaClientOptions = {
-    kafkaHost: KAFKA_HOST2,
+    kafkaHost: KAFKA_HOST,
     connectTimeout: 1000,
     requestTimeout: 3000,
     autoConnect: true,
@@ -32,9 +31,9 @@ const stdinTransform = new Transform({
     decodeStrings: true,
     transform(text, encoding, callback) {
         text = _.trim(text);
-        console.log(`pushing message ${text} to ExampleTopic`);
+        console.log(`pushing message ${text} to socketTopicTest`);
         callback(null, {
-            topic: 'ExampleTopic',
+            topic: 'socketTopicTest',
             messages: text
         });
     }
