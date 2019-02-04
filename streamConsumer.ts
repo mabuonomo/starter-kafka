@@ -1,8 +1,31 @@
-import { ProducerStream, ConsumerGroupStream, ConsumerGroupStreamOptions } from "kafka-node";
+import { ProducerStream, ConsumerGroupStream, ConsumerGroupStreamOptions, ProducerStreamOptions } from "kafka-node";
 import { Transform } from "stream";
+import { KafkaClientOptions } from "kafka-node";
+import { ProducerOptions } from "kafka-node";
 
-const resultProducer = new ProducerStream();
+// const resultProducer = new ProducerStream();
 const { KAFKA_HOST } = require('./config');
+
+const options: KafkaClientOptions = {
+  kafkaHost: KAFKA_HOST,
+  connectTimeout: 1000,
+  requestTimeout: 3000,
+  autoConnect: true,
+  clientId: "my-client-id"
+}
+
+const ops: ProducerOptions = {
+  requireAcks: 1,
+  ackTimeoutMs: 100,
+  partitionerType: 2
+}
+
+const cc: ProducerStreamOptions = {
+  kafkaClient: options,
+  producer: ops,
+}
+
+const resultProducer = new ProducerStream(cc);
 
 const consumerOptions: ConsumerGroupStreamOptions = {
   kafkaHost: KAFKA_HOST,
