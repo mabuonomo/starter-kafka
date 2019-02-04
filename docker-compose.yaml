@@ -3,20 +3,20 @@ services:
   kafka:
     image: "landoop/fast-data-dev:latest"
     environment:
-      - ADV_HOST=127.0.0.1
+      - ADV_HOST=kafka
     ports:
       - "2181:2181"
       - "3030:3030"
       - "8081:8081"
       - "8082:8082"
       - "9092:9092"
-  # node:
-  #   build: .
-  #   volumes:
-  #     - .:/home/app/
-  #   ports:
-  #     - "3000:3000"
-  #   links:
-  #     - kafka
-  #   depends_on: 
-  #     - kafka
+  node:
+    build: .
+    volumes:
+      - .:/home/app/
+    ports:
+      - "3000:3000"
+    links:
+      - kafka
+    depends_on: 
+      - kafka

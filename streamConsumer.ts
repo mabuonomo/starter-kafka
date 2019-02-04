@@ -13,7 +13,7 @@ const consumerOptions: ConsumerGroupStreamOptions = {
   fromOffset: 'latest'
 };
 
-const consumerGroup = new ConsumerGroupStream(consumerOptions, 'ExampleTopic');
+const consumerGroup = new ConsumerGroupStream(consumerOptions, 'socketTopicTest');
 
 const messageTransform = new Transform({
   objectMode: true,
