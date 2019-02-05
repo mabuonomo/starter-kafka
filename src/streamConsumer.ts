@@ -3,10 +3,10 @@ import { Transform } from "stream";
 import { producerStreamOptions } from "./options/optionsProducer";
 import { consumerOptions } from "./options/optionsConsumer";
 
-const { TOPIC_FINAL } = require('../config');
+const { TOPIC_FINAL, TOPIC_INITIAL } = require('../config');
 
 const resultProducer = new ProducerStream(producerStreamOptions);
-const consumerGroup = new ConsumerGroupStream(consumerOptions, 'socketTopicTest');
+const consumerGroup = new ConsumerGroupStream(consumerOptions, TOPIC_INITIAL);
 
 const messageTransform = new Transform({
   objectMode: true,

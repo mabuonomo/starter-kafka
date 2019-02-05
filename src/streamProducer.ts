@@ -1,4 +1,4 @@
-import { ProducerStream, ProducerOptions, ProducerStreamOptions } from "kafka-node";
+import { ProducerStream } from "kafka-node";
 import { Transform } from "stream";
 import * as _ from "lodash";
 import { producerStreamOptions } from "./options/optionsProducer";
@@ -12,7 +12,7 @@ const stdinTransform = new Transform({
     decodeStrings: true,
     transform(text, encoding, callback) {
         text = _.trim(text);
-        console.log(`pushing message ${text} to socketTopicTest`);
+        console.log(`pushing message ${text} to ${TOPIC_INITIAL}`);
         callback(null, {
             topic: TOPIC_INITIAL,
             messages: text
