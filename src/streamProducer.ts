@@ -1,30 +1,11 @@
 import { ProducerStream, ProducerOptions, ProducerStreamOptions } from "kafka-node";
 import { Transform } from "stream";
 import * as _ from "lodash";
-import { KafkaClientOptions } from "kafka-node";
+import { producerStreamOptions } from "./options/optionsProducer";
 
-const { KAFKA_HOST } = require('./config');
+const { TOPIC_INITIAL } = require('../config');
 
-const options: KafkaClientOptions = {
-    kafkaHost: KAFKA_HOST,
-    connectTimeout: 1000,
-    requestTimeout: 3000,
-    autoConnect: true,
-    clientId: "my-client-id"
-}
-
-const ops: ProducerOptions = {
-    requireAcks: 1,
-    ackTimeoutMs: 100,
-    partitionerType: 2
-}
-
-const cc: ProducerStreamOptions = {
-    kafkaClient: options,
-    producer: ops,
-}
-
-const producer = new ProducerStream(cc);
+const producer = new ProducerStream(producerStreamOptions);
 
 const stdinTransform = new Transform({
     objectMode: true,
@@ -33,7 +14,7 @@ const stdinTransform = new Transform({
         text = _.trim(text);
         console.log(`pushing message ${text} to socketTopicTest`);
         callback(null, {
-            topic: 'socketTopicTest',
+            topic: TOPIC_INITIAL,
             messages: text
         });
     }
